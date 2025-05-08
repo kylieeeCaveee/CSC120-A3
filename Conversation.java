@@ -1,10 +1,11 @@
 import java.util.Scanner; 
+//.split
 
 class Conversation implements Chatbot {
 //this class has the attributes a transcript array, int current_line, and a random responses string int. This class holds the methods chat, print transcript, and respond. 
    String [] transcript; 
-   int current_line; 
-   String [] random_responses; 
+   int currentLine; 
+   String [] randomResponses; 
    // random response list here
    // Attributes 
 
@@ -13,19 +14,19 @@ class Conversation implements Chatbot {
    */
   Conversation() { 
    // this is the constructor it initializes the current line at zero and the random responses with a total of five different random responses
-    this.current_line= 0; 
+    this.currentLine= 0; 
     //put random response list here
-    this.random_responses= new String[5]; 
-    String random_response1= "Cool, Cool, Cool! Tell me more!";
-    random_responses[0]= random_response1; 
-    String random_response2= "Very Interesting! What else?";
-    random_responses[1]= random_response2; 
-    String random_response3= "How awesome! What else did you do?";
-    random_responses[2]= random_response3; 
-    String random_response4= "So exciting! What else?";
-    random_responses[3]= random_response4; 
-    String random_response5= "Oooh! Tell me more!";
-    random_responses[4]= random_response5; 
+    this.randomResponses= new String[5]; 
+    String randomResponse1= "Cool, Cool, Cool! Tell me more";
+    randomResponses[0]= randomResponse1; 
+    String randomResponse2= "Very Interesting! What else";
+    randomResponses[1]= randomResponse2; 
+    String randomResponse3= "How awesome! What else did you do";
+    randomResponses[2]= randomResponse3; 
+    String randomResponse4= "So exciting! What else";
+    randomResponses[3]= randomResponse4; 
+    String randomResponse5= "Oooh! Tell me more";
+    randomResponses[4]= randomResponse5; 
   }
 
   /**
@@ -35,47 +36,47 @@ class Conversation implements Chatbot {
     //this is the chat method it starts and runs the conversation with the user. It begins by asking the number of rounds and the conversation will run for that number of rounds (a round consists of the bot asking a question and then the user's response).
     //After everyline of conversation it adds them to the transcript. After the first round it loops through the correct amount of times and then once finished it prints goodbye. 
     //establishing rounds
-    String intro_statement= "Hi! Welcome to my chatbot :)! How many rounds of conversation would you like?"; 
-    System.out.println(intro_statement);
+    String introStatement= "Hi! Welcome to my chatbot :)! How many rounds of conversation would you like?"; 
+    System.out.println(introStatement);
     Scanner input= new Scanner(System.in); 
     int rounds= input.nextInt(); 
     this.transcript= new String[2*rounds+3]; 
-    transcript[current_line]= intro_statement; 
-    current_line++; 
-    transcript[current_line]= ""+rounds; 
+    transcript[currentLine]= introStatement; 
+    currentLine++; 
+    transcript[currentLine]= ""+rounds; 
     input.nextLine(); //throw away
     //if they don't want to talk
     if (rounds==0){
       input.close(); 
       String goodbye= "Goodbye!"; 
       System.out.print(goodbye); 
-      transcript[current_line]= goodbye;  
+      transcript[currentLine]= goodbye;  
       return; 
     }
     //first round of conversation
-    String first_question= "What did you do today?"; 
-    transcript[current_line]= first_question;  
-    current_line++; 
-    System.out.println( first_question); 
-    String user_response= input.nextLine(); 
-    transcript[current_line]= user_response;  
-    current_line++; 
+    String firstQuestion= "What did you do today?"; 
+    transcript[currentLine]= firstQuestion;  
+    currentLine++; 
+    System.out.println( firstQuestion); 
+    String userResponse= input.nextLine(); 
+    transcript[currentLine]= userResponse;  
+    currentLine++; 
     int current_round; 
     //all subsequent rounds
     for( current_round= 1; current_round < rounds; current_round++ ) {
-      String computer_response= respond(user_response); 
-      transcript[current_line]= computer_response;  
-      current_line++; 
-      System.out.println(computer_response); 
-      user_response= input.nextLine(); 
-      transcript[current_line]= user_response;  
-      current_line++;
+      String computerResponse= respond(userResponse); 
+      transcript[currentLine]= computerResponse;  
+      currentLine++; 
+      System.out.println(computerResponse); 
+      userResponse= input.nextLine(); 
+      transcript[currentLine]= userResponse;  
+      currentLine++;
     }
     //ending
     input.close(); 
     String goodbye= "Goodbye!"; 
     System.out.print(goodbye); 
-    transcript[current_line]= goodbye;  
+    transcript[currentLine]= goodbye;  
   }
     
 
@@ -87,8 +88,8 @@ class Conversation implements Chatbot {
   public void printTranscript()  {
     //this iterates through the transcript array and prints out each line
     System.out.println("\n\nTranscript: "); 
-    for (int transcript_index=0; transcript_index < transcript.length-1; transcript_index++ ){
-      System.out.println(transcript[transcript_index]); 
+    for (int transcriptIndex=0; transcriptIndex < transcript.length-1; transcriptIndex++ ){
+      System.out.println(transcript[transcriptIndex]); 
     }
     return; 
   }
@@ -97,149 +98,97 @@ class Conversation implements Chatbot {
 
   /**
    * Gives appropriate response (mirrored or canned) to user input
-   * @param inputString the users last line of input
+   * @param userResponse the users last line of input
    * @return mirrored or canned response to user input  
    */
-  public String respond(String user_response) {
+  public String respond(String userResponse) {
     //this method responds to the user by mirroring their langauge. It converts I -> you, me -> you, am->are, you -> I,my-> your, and your->my.
     // If there is no language present to mirror it will generate one of five random responses.
     
     // establish variables we will use
-    String computer_response= " "; 
-    String working_user_response= user_response; 
-    boolean has_keywords= false; 
-    
-
-   //removing end punctuation and making all lowercase and adding spaces at beginning and end
-    if (user_response.charAt(user_response.length()-1)== '.' || user_response.charAt(user_response.length()-1)== '!' || user_response.charAt(user_response.length()-1)== '?'){
-      working_user_response= " "+ user_response.substring(0,user_response.length()-1)+ " "; 
-      working_user_response= working_user_response.toLowerCase(); 
-    }else{
-     working_user_response= " "+ user_response+ " "; 
-     working_user_response= working_user_response.toLowerCase(); 
+    String computerResponse= ""; 
+    userResponse=userResponse.toLowerCase(); 
+    userResponse= userResponse.trim(); 
+    if (userResponse.charAt(userResponse.length()-1)=='.'||userResponse.charAt(userResponse.length()-1)=='?'||userResponse.charAt(userResponse.length()-1)=='!'){
+      userResponse= userResponse.substring(0,userResponse.length()-1); 
     }
+    String [] workingUserResponse= userResponse.split(" "); 
+    boolean hasKeywords= false; 
     
     //go through string 
-    for (int current_letter_idx= 0; current_letter_idx< working_user_response.length(); current_letter_idx++ ){  
+    for (int currentIdx= 0; currentIdx< workingUserResponse.length; currentIdx++ ){ 
+      boolean wordEdited= false;  
       // finding and replacing I with you
-      if (working_user_response.charAt(current_letter_idx)== 'i' && working_user_response.charAt(current_letter_idx-1)== ' '&& working_user_response.charAt(current_letter_idx+1)==' '){
-        has_keywords= true; 
-        // if I is first letter in scentence
-        if (current_letter_idx==1) {
-          String second_half= working_user_response.substring(current_letter_idx+1);
-          working_user_response= " You" + second_half; 
-        }else{
-           // if I isn't the first letter in the scentence. 
-          String first_half= working_user_response.substring(0,current_letter_idx); 
-          String second_half= working_user_response.substring(current_letter_idx+1); 
-          working_user_response= first_half+ "you" + second_half; 
-        }
-      }else if (working_user_response.charAt(current_letter_idx)== 'm' && working_user_response.charAt(current_letter_idx-1)== ' '&& working_user_response.charAt(current_letter_idx+1)== 'e' && working_user_response.charAt(current_letter_idx+2)== ' '){
-        // //finding and replacing me with you
-        has_keywords= true; 
-        //if Me is first word
-        if (current_letter_idx==1){
-          String second_half= working_user_response.substring(current_letter_idx+2); 
-          working_user_response= "You"+second_half; 
-        }else{
-           //if Me isn't first word
-          String first_half= working_user_response.substring(0,current_letter_idx); 
-          String second_half= working_user_response.substring(current_letter_idx+2); 
-          working_user_response= first_half+ "you" + second_half;
-        }
-      }else if(working_user_response.charAt(current_letter_idx)=='a'&& working_user_response.charAt(current_letter_idx-1)==' '&& working_user_response.charAt(current_letter_idx+1)=='m'&& working_user_response.charAt(current_letter_idx+2)==' '){
-         //finding and replacing am with are
-        has_keywords= true; 
-        if (current_letter_idx==1){
-          String second_half= working_user_response.substring(current_letter_idx+2); 
-          working_user_response= "Are"+ second_half; 
-        }else {
-          String first_half= working_user_response.substring(0,current_letter_idx); 
-          String second_half= working_user_response.substring(current_letter_idx+2); 
-          working_user_response= first_half+ "are" + second_half;
-        }
-      }else if(working_user_response.charAt(current_letter_idx)=='y' && working_user_response.charAt(current_letter_idx-1)==' '&& working_user_response.charAt(current_letter_idx+1)=='o'&& working_user_response.charAt(current_letter_idx+2)=='u'&& working_user_response.charAt(current_letter_idx+3)==' '){
+      if (workingUserResponse[currentIdx].equals("i")){
+        hasKeywords= true; 
+        workingUserResponse[currentIdx]= "you"; 
+        wordEdited= true; 
+      }else if (workingUserResponse[currentIdx].equals("me") && wordEdited== false){
+        //finding and replacing me with you
+        hasKeywords= true; 
+        workingUserResponse[currentIdx]= "you";
+        wordEdited= true;
+      }else if(workingUserResponse[currentIdx].equals("am") && wordEdited== false){
+        //finding and replacing am with are
+        hasKeywords= true; 
+        workingUserResponse[currentIdx]= "are";
+        wordEdited= true;
+      }else if(workingUserResponse[currentIdx].equals("you") && wordEdited==false){
         //finding and replacing you with I 
-        has_keywords= true;
-        if(current_letter_idx==1){
-          String second_half= working_user_response.substring(current_letter_idx+3); 
-          working_user_response= "I"+ second_half;
-        }else{
-          String first_half= working_user_response.substring(0,current_letter_idx); 
-          String second_half= working_user_response.substring(current_letter_idx+3); 
-          working_user_response= first_half+ "I" + second_half;
-        }
-      }else if(working_user_response.charAt(current_letter_idx)=='m'&& working_user_response.charAt(current_letter_idx-1)==' '&&working_user_response.charAt(current_letter_idx+1)=='y'&& working_user_response.charAt(current_letter_idx+2)==' '){
-         //finding and replacing my with your
-        has_keywords= true; 
-        if(current_letter_idx==1) {
-          String second_half= working_user_response.substring(current_letter_idx+2); 
-          working_user_response= "your"+ second_half;
-        }else{
-          String first_half= working_user_response.substring(0,current_letter_idx); 
-          String second_half= working_user_response.substring(current_letter_idx+2); 
-          working_user_response= first_half+ "your" + second_half;
-        }
-
-      }else if (working_user_response.charAt(current_letter_idx)== 'y'&& working_user_response.charAt(current_letter_idx-1)== ' '&& working_user_response.charAt(current_letter_idx+1)== 'o'&& working_user_response.charAt(current_letter_idx+2)== 'u' & working_user_response.charAt(current_letter_idx+3)=='r'&& working_user_response.charAt(current_letter_idx+4)==' '){
+        hasKeywords= true;
+        workingUserResponse[currentIdx]= "i";
+        wordEdited= true;
+      }else if(workingUserResponse[currentIdx].equals("my") && wordEdited==false){
+        //finding and replacing my with your
+        hasKeywords= true; 
+        workingUserResponse[currentIdx]= "your";
+        wordEdited= true;
+      }else if (workingUserResponse[currentIdx].equals("your") && wordEdited==false){
         //finding and replacing your with my
-        has_keywords= true; 
-        if(current_letter_idx==1){
-          String second_half= working_user_response.substring(current_letter_idx+4); 
-          working_user_response= "my"+ second_half;
-        }else{
-          String first_half= working_user_response.substring(0,current_letter_idx); 
-          String second_half= working_user_response.substring(current_letter_idx+4); 
-          working_user_response= first_half+ "my" + second_half;
-        }
+        hasKeywords= true; 
+        workingUserResponse[currentIdx]= "my";
+        wordEdited= true;
+      }else if (workingUserResponse[currentIdx].equals("are") && wordEdited==false){
+        //finding and replacing your with my
+        hasKeywords= true; 
+        workingUserResponse[currentIdx]= "am";
+        wordEdited= true;
       }
     } 
-    computer_response=working_user_response; 
+    //setting back to string
+    for(int i=0; i<workingUserResponse.length; i++){
+      computerResponse= computerResponse+ workingUserResponse[i]+ " "; 
+    }
+
      //if no keywords present
-    if (has_keywords==false){
+    if (hasKeywords==false){
       // random response generator
       double random_number= Math.random(); 
       if (random_number < 0.20) {
-        computer_response= random_responses[0]; 
+        computerResponse= randomResponses[0]; 
       }else if (random_number>=0.20 && random_number<0.40){
-        computer_response= random_responses[1]; 
+        computerResponse= randomResponses[1]; 
       }else if (random_number>=0.40 && random_number<0.60){
-        computer_response= random_responses[2]; 
+        computerResponse= randomResponses[2]; 
       }else if (random_number>=0.60 && random_number<0.80) {
-        computer_response= random_responses[3]; 
+        computerResponse= randomResponses[3]; 
       }else {
-        computer_response= random_responses[4]; 
+        computerResponse= randomResponses[4]; 
       }
     }
     
-     // making sure first letter isn't space 
-     if(computer_response.charAt(0)==' '){
-       computer_response=computer_response.substring(1); 
-     }
-
-     // making sure first letter is capatalized
-     String first_letter= ""+computer_response.charAt(0);
-     String first_letter_capitalized= first_letter.toUpperCase();
-     
-     if (!first_letter.equals(first_letter_capitalized)){
-       computer_response= first_letter.toUpperCase() + computer_response.substring(1); 
-     }
-     
-     //making sure there is no space at end
-     char last_letter= computer_response.charAt(computer_response.length()-1);
-     
-     if (last_letter== ' '){
-       computer_response= computer_response.substring(0,computer_response.length()-1); 
-     } 
-
-     //adding question mark at end
-     computer_response= computer_response+'?'; 
-   return computer_response; 
-   }
-
-
-  
-
+    //final formatting
+    computerResponse= computerResponse.trim(); 
+   // making sure first letter is capatalized
+    String first_letter= ""+computerResponse.charAt(0);
+    String first_letter_capitalized= first_letter.toUpperCase();
+    computerResponse= first_letter_capitalized +computerResponse.substring(1); 
+    //replacing lower case i's with uppercase ones
+    computerResponse= computerResponse.replaceAll(" i ", " I "); 
+    //adding question mark at end
+    computerResponse= computerResponse+'?'; 
+    return computerResponse; 
+ }
 
   public static void main(String[] arguments) {
 
